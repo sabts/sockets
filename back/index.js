@@ -8,7 +8,19 @@ const io = socketio(server, {
 
 //Eventos de conexión
 io.on("connection", socket => {
-  console.log("se ha concectado un cliente");
+  //rsconsole.log("se ha concectado un cliente");
+  //Mensaje de nuevo cliente conectado
+  socket.broadcast.emit("chat_message_server", {
+    username: "INFO",
+    text: "Se ha conectado un nuevo usuario",
+  });
+
+  //Emitir al front el numero de usarios conectado
+  io.emit("clients_count", io.engine.clientsCount);
+
+  socket.on("chat_message", data => {
+    io.emit("chat_message_server", data);
+  });
 });
 
 server.listen(process.env.PORT || 3000);
