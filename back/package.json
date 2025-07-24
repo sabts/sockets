@@ -1,0 +1,25 @@
+{
+  "name": "sockets",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sabts/sockets.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sabts/sockets/issues"
+  },
+  "homepage": "https://github.com/sabts/sockets#readme",
+  "description": "",
+  "dependencies": {
+    "nodemon": "^3.1.10",
+    "socket.io": "^4.8.1"
+  }
+}
