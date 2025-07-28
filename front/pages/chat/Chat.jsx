@@ -18,6 +18,10 @@ const Chat = () => {
       setClients(clients => [...clients, clientsCount])
     );
 
+    socket.on("init_data", messages => {
+      setMessages(messages.reverse());
+    });
+
     //clean up funtion
     return () => {
       socket.off("chat_message_server");
@@ -26,6 +30,7 @@ const Chat = () => {
   }, []);
 
   const submit = data => {
+    data.socketId = socket.id;
     socket.emit("chat_message", data);
   };
 
