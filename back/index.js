@@ -2,9 +2,18 @@ const http = require("node:http");
 const socketio = require(`socket.io`);
 const Message = require("./models/message.model");
 
+const { OpenAI } = require("openai");
+const { sendGpt } = require("./utils/gpt");
+
 const server = http.createServer();
 
 require("./config/db");
+
+//cliente de open AI
+const client = new OpenAI({
+  apiKey:
+    "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",
+});
 
 const io = socketio(server, {
   cors: { origin: "*" },
@@ -31,6 +40,16 @@ io.on("connection", async socket => {
   socket.on("chat_message", async data => {
     await Message.create(data);
     io.emit("chat_message_server", data);
+  });
+
+  // suscripción evento "ai_question"
+  socket.on("ai_question", async text => {
+    console.log(text);
+    const response = await sendGpt(client, text);
+    io.emit("chat_message_server", {
+      username: "Chat",
+      text: response,
+    });
   });
 
   //desuscribir de messages (desconectarse)

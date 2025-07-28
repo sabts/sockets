@@ -5,7 +5,7 @@ import { useState } from "react";
 const socket = io("http://localhost:3000");
 
 const Chat = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, getValues } = useForm();
   const [messages, setMessages] = useState([]);
   const [clients, setClients] = useState([]);
 
@@ -28,6 +28,11 @@ const Chat = () => {
       socket.off("clients_count");
     };
   }, []);
+
+  const sendToIa = () => {
+    const text = getValues("text");
+    socket.emit("ai_question", text);
+  };
 
   const submit = data => {
     data.socketId = socket.id;
@@ -59,6 +64,7 @@ const Chat = () => {
           </div>
           <input type="submit" value="send" />
         </form>
+        <button onClick={sendToIa}>Sent to IA</button>
       </footer>
     </>
   );
